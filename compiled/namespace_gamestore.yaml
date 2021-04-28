@@ -3,11 +3,11 @@ apiVersion: v1
 kind: Namespace
 metadata:
   annotations:
-    audit: "true"
     configmanagement.gke.io/cluster-name: defaultcluster
     configmanagement.gke.io/source-path: config/namespaces/eng/gamestore/namespace.yaml
-    configsync.gke.io/declared-fields: '{"f:metadata":{"f:annotations":{"f:audit":{}},"f:labels":{"f:app":{}}}}'
+    configsync.gke.io/declared-fields: '{"f:metadata":{"f:annotations":{"f:retail":{}},"f:labels":{"f:app":{}}}}'
     hnc.x-k8s.io/managed-by: configmanagement.gke.io
+    retail: "true"
   labels:
     app: gamestore
     configsync.gke.io/declared-version: v1
