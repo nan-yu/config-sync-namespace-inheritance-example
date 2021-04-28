@@ -178,21 +178,22 @@ All objects managed by Config Sync have the `app.kubernetes.io/managed-by` label
   
   Example Output:
   ```console
-  NAMESPACE     NAME                  POD-SELECTOR   AGE
-  analytics     allow-all-egress      <none>         7h17m
-  analytics     default-deny-egress   <none>         7h17m
-  gamestore     allow-all-egress      <none>         7h17m
-  gamestore     default-deny-egress   <none>         7h17m
-  incubator-1   allow-all-egress      <none>         7h17m
-  incubator-2   allow-all-egress      <none>         7h17m
+  NAMESPACE     NAME                       POD-SELECTOR    AGE
+  analytics     allow-gamestore-ingress    app=gamestore   7h17m
+  analytics     default-deny-all-traffic   <none>          7h17m
+  gamestore     allow-gamestore-ingress    app=gamestore   7h17m
+  gamestore     default-deny-all-traffic   <none>          7h17m
+  incubator-1   default-deny-all-traffic   <none>          7h17m
+  incubator-2   default-deny-all-traffic   <none>          7h17m
   ```
   
   Explanation:
-  - The `allow-all-egress` networkpolicy is created in all managed namespaces because it is inherited from
-    `config/namespaces/network-policy-allow-all-egress.yaml`.
-  - The `default-deny-egress` networkpolicy is created in namespaces under the `eng`
+  - The `default-deny-all-traffic` networkpolicy is created in all managed namespaces because it is inherited from
+    `config/namespaces/network-policy-default-deny-all.yaml`.
+  - The `allow-gamestore-ingress` networkpolicy is created in namespaces under the `eng`
     [abstract namespace directory](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/namespace-scoped-objects#abstract-namespace-config)
-    because it is inherited from `config/namespaces/eng/network-policy-default-deny-egress.yaml`.
+    because it is inherited from `config/namespaces/eng/network-policy-allow-gamestore-ingress.yaml`.
+    Ingress traffic will be allowed only to Pods in the `gamestore` namespace with the `app:gamestore` label.
   
 - List resourcequotas managed by Config Sync
   ```console
