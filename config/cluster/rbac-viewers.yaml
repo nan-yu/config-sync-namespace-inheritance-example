@@ -4,7 +4,7 @@ metadata:
   name: rbac-viewers
 subjects:
 - kind: User
-  name: cheryl@foo-corp.com
+  name: cheryl@example.com
   apiGroup: rbac.authorization.k8s.io
 roleRef:
   kind: ClusterRole

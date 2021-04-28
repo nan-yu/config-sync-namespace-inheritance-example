@@ -4,7 +4,7 @@ metadata:
   name: alice-rolebinding
 subjects:
 - kind: User
-  name: alice@foo-corp.com
+  name: alice@example.com
   apiGroup: rbac.authorization.k8s.io
 roleRef:
   kind: ClusterRole
