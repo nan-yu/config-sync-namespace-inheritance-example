@@ -124,28 +124,52 @@ All objects managed by Config Sync have the `app.kubernetes.io/managed-by` label
 
 - List rolebindings managed by Config Sync
   ```console
+  kubectl get roles -A -l app.kubernetes.io/managed-by=configmanagement.gke.io
+  ```
+  
+  Example Output:
+  ```console
+  NAMESPACE     NAME                CREATED AT
+  analytics     eng-viewer          2021-04-28T19:10:43Z
+  gamestore     eng-viewer          2021-04-28T19:10:43Z
+  incubator-1   incubator-1-admin   2021-04-28T19:18:17Z
+  ```
+  
+  Explanation:
+  - The `eng-viewer` roleb is created in namespaces under the `eng`
+    [abstract namespace directory](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/namespace-scoped-objects#abstract-namespace-config)
+    because it is inherited from `config/namespaces/eng/eng-role.yaml`.
+  - The `incubator-1-admin` role is created in the `incubator-1` namespace
+    because of the config `config/namespaces/rnd/incubator-1/incubator-1-admin-role.yaml`.
+
+- List rolebindings managed by Config Sync
+  ```console
   kubectl get rolebindings -A -l app.kubernetes.io/managed-by=configmanagement.gke.io
   ```
   
   Example Output:
   ```console
-  NAMESPACE     NAME                ROLE                    AGE
-  analytics     alice-rolebinding   ClusterRole/foo-admin   7h14m
-  analytics     mike-rolebinding    ClusterRole/foo-admin   7h14m
-  analytics     viewers             ClusterRole/view        7h14m
-  gamestore     alice-rolebinding   ClusterRole/foo-admin   7h14m
-  gamestore     bob-rolebinding     ClusterRole/foo-admin   7h14m
-  gamestore     viewers             ClusterRole/view        7h14m
-  incubator-1   viewers             ClusterRole/view        7h14m
-  incubator-2   viewers             ClusterRole/view        7h14m
+  NAMESPACE     NAME               ROLE                    AGE
+  analytics     eng-admin          Role/eng-viewer         10m
+  analytics     mike-rolebinding   ClusterRole/foo-admin   18h
+  analytics     viewers            ClusterRole/view        18h
+  gamestore     bob-rolebinding    ClusterRole/foo-admin   18h
+  gamestore     eng-admin          Role/eng-viewer         10m
+  gamestore     viewers            ClusterRole/view        18h
+  incubator-1   viewers            ClusterRole/view        19h
+  incubator-2   viewers            ClusterRole/view        19h
   ```
   
   Explanation:
   - The `viewers` rolebinding is created in all managed namespaces because it is inherited from
     `config/namespaces/viewers-rolebinding.yaml`.
-  - The `alice-rolebinding` rolebinding is created in namespaces under the `eng`
+  - The `eng-admin` rolebinding is created in namespaces under the `eng`
     [abstract namespace directory](https://cloud.google.com/kubernetes-engine/docs/add-on/config-sync/how-to/namespace-scoped-objects#abstract-namespace-config)
-    because it is inherited from `config/namespaces/eng/alice-rolebinding.yaml`.
+    because it is inherited from `config/namespaces/eng/eng-rolebinding.yaml`.
+  - `mike-rolebinding` is created in the `analytics` namespace
+    because of the config `config/namespaces/eng/analytics/mike-rolebinding.yaml`.
+  - `bob-rolebinding` is created in the `gamestore` namespace
+    because of the config `config/namespaces/eng/gamestore/bob-rolebinding.yaml`.
 
 - List networkpolicies managed by Config Sync
   ```console

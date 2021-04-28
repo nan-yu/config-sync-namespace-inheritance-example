@@ -4,17 +4,17 @@ kind: RoleBinding
 metadata:
   annotations:
     configmanagement.gke.io/cluster-name: defaultcluster
-    configmanagement.gke.io/source-path: config/namespaces/eng/alice-rolebinding.yaml
+    configmanagement.gke.io/source-path: config/namespaces/eng/eng-roleinding.yaml
     configsync.gke.io/declared-fields: '{"f:roleRef":{"f:apiGroup":{},"f:kind":{},"f:name":{}},"f:subjects":{}}'
   labels:
     configsync.gke.io/declared-version: v1
-  name: alice-rolebinding
-  namespace: gamestore
+  name: eng-admin
+  namespace: analytics
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: foo-admin
+  kind: Role
+  name: eng-viewer
 subjects:
 - apiGroup: rbac.authorization.k8s.io
-  kind: User
-  name: alice@example.com
+  kind: Group
+  name: eng@example.com
